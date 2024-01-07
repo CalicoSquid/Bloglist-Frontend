@@ -1,0 +1,24 @@
+
+
+.message-container {
+  height: 30px;
+
+  .error {
+    padding: $base-padding / 2;
+    text-align: center;
+    p {
+      color: $error-color;
+    }
+  }
+  
+  .success {
+    padding: $base-padding/2;
+    text-align: center;
+  
+    p {
+      color: $success-color;
+    }
+  }
+  
+}
+

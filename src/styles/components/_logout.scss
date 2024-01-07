@@ -1,0 +1,12 @@
+
+.logout {
+    align-items: center;
+
+    p {
+        margin-right: 2rem;
+    }
+
+    .logout-button {
+        @include auth-button;
+    }
+}

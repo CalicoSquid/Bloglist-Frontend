@@ -1,0 +1,15 @@
+%flex-layout {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav {
+  @extend %flex-layout;
+  height: $head-height;
+  border: 1px solid $tertiary-color;
+  padding: 3rem;
+
+    .header-left {
+      align-items: center;
+    }
+}

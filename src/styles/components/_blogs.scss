@@ -1,0 +1,35 @@
+.blogs {
+  .blog-container {
+    width: 100%;
+    padding: 3rem;
+
+    .card {
+        background-color: $other-black;
+      padding: $base-padding;
+      box-shadow: $base-box-shadow;
+      border: $base-border-width solid $tertiary-color;
+      border-radius: $border-radius-sm;
+
+      p {
+        font-size: $base-font-size;
+        margin-block: $base-margin;
+      }
+
+      title {
+        font-size: $font-size-lrg;
+      }
+
+      a {
+        color: white;
+
+        &:hover {
+            color: $secondary-color;
+        }
+      }
+
+      .card-button {
+        @include button-standard;
+      }
+    }
+  }
+}

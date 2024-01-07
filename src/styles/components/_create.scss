@@ -1,0 +1,40 @@
+.create-form {
+    color: white;
+    margin: 1rem 2rem;
+
+    h2 {
+        color: white;
+        margin-bottom: 1rem;
+    }
+
+    .form-fields {
+        gap: 1rem;
+        padding: 2rem;
+        box-shadow: $base-box-shadow;
+        background-color: $other-black;
+
+        label {
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.4rem;
+        }
+    }
+
+   .create-button {
+        padding: 0.3rem;
+        width: 100%;
+        border-radius: $border-radius-sm;
+        background-color: $secondary-color;
+        height: 40px;
+        font-size: 1.3rem;
+
+        &:hover {
+            background-color: orangered;
+            color: $other-black;
+          }
+    }
+}

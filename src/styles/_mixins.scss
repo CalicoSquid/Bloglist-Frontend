@@ -1,0 +1,26 @@
+@mixin button-standard {
+  padding: $base-padding - 0.7em;
+  margin-right: $base-margin;
+  border-radius: $border-radius-sm;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    color: white;
+    background-color: $secondary-color;
+  }
+}
+
+@mixin auth-button {
+  background-color: $secondary-color;
+  height: 70px;
+  width: 90px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: $border-radius-sm;
+  transition: all ease 0.3s;
+
+  &:hover {
+    background-color: $tertiary-color;
+    color: $other-black;
+  }
+}

@@ -1,0 +1,18 @@
+
+.login-form {
+    height: 70px;
+    gap: 0.5rem;
+
+    .login-fields {
+        height: 70px;
+        justify-content: space-between;
+        
+        input {
+            padding: 0.4rem;
+        }
+    }
+    
+    .login-button {
+        @include auth-button;
+    }
+}
