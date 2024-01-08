@@ -1,34 +1,50 @@
 .blogs {
+  margin: 1rem 2rem;
+
   .blog-container {
-    width: 100%;
-    padding: 3rem;
+    width: 60%;
 
     .card {
-        background-color: $other-black;
+      background-color: $other-black;
       padding: $base-padding;
       box-shadow: $base-box-shadow;
       border: $base-border-width solid $tertiary-color;
       border-radius: $border-radius-sm;
+      color: white;
+      gap: 1rem;
+      align-items: flex-start;
 
-      p {
-        font-size: $base-font-size;
-        margin-block: $base-margin;
-      }
-
-      title {
-        font-size: $font-size-lrg;
-      }
-
-      a {
-        color: white;
-
-        &:hover {
+      .details {
+        
+        p {
+          font-size: $base-font-size;
+          margin-block: $base-margin;
+        }
+  
+        title {
+          font-size: $font-size-lrg;
+        }
+  
+        a {
+          color: white;
+  
+          &:hover {
             color: $secondary-color;
+          }
         }
       }
+      .card-buttons {
+        width: 100%;
+        justify-content: space-between;
 
-      .card-button {
-        @include button-standard;
+        button {
+          @include button-standard;
+        }
+
+        .delete {
+          background-color: $close-delete;
+          color: white;
+        }
       }
     }
   }

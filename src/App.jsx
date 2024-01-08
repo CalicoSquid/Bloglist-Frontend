@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./components/Header";
 import { useEffect } from "react";
 import Blogs from "./components/Blogs";
@@ -6,6 +6,7 @@ import blogService from "../services/blogs";
 import loginService from "../services/login";
 import Error from "./components/Error";
 import Create from "./components/Create";
+import Toggle from "./components/Toggle";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
@@ -14,14 +15,16 @@ function App() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState({
     error: null,
-    success: null
-  })
+    success: null,
+  });
   const [loading, setLoading] = useState(false);
   const [newBlog, setNewBlog] = useState({
     title: "",
     author: "",
     url: "",
   });
+
+  const addBlogRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -50,17 +53,16 @@ function App() {
       setPassword("");
       setLoading(false);
     } catch (error) {
-      setErrorMessage(error?.response?.data?.error || "Error logging in");
-      setMessage(prev => ({
+      setMessage((prev) => ({
         ...prev,
-        error: error?.response?.data?.error || "Error logging in"
-      }))
+        error: error?.response?.data?.error || "Error logging in",
+      }));
       setLoading(false);
       setTimeout(() => {
         setMessage({
           error: null,
-          success: null
-        })
+          success: null,
+        });
       }, 5000);
     }
   };
@@ -68,6 +70,42 @@ function App() {
   const handleLogout = () => {
     window.localStorage.clear();
     setUser(null);
+  };
+
+  const handleDeleteBlog = async (id) => {
+    console.log(id);
+    try {
+      const response = await blogService.remove(id);
+      console.log(response);
+      const blogs = await blogService.getAll();
+      setBlogs(blogs)
+      setMessage((prev) => ({
+        ...prev,
+        success: "Blog successfully deleted",
+      }));
+      setTimeout(() => {
+        setTimeout(() => {
+          setMessage({
+            error: null,
+            success: null,
+          });
+        }, 5000);
+      });
+    } catch (error) {
+      console.log(error);
+      setMessage((prev) => ({
+        ...prev,
+        error: "Error deleting blog",
+      }));
+      setTimeout(() => {
+        setTimeout(() => {
+          setMessage({
+            error: null,
+            success: null,
+          });
+        }, 5000);
+      });
+    }
   };
 
   return (
@@ -83,13 +121,15 @@ function App() {
       <Error message={message} />
       {user && (
         <div>
-          <Create
-            setNewBlog={setNewBlog}
-            setMessage={setMessage}
-            newBlog={newBlog}
-            setBlogs={setBlogs}
-          />
-          <Blogs blogs={blogs} />
+          <Toggle ref={addBlogRef}>
+            <Create
+              setNewBlog={setNewBlog}
+              setMessage={setMessage}
+              newBlog={newBlog}
+              setBlogs={setBlogs}
+            />
+          </Toggle>
+          <Blogs blogs={blogs} deleteBlog={handleDeleteBlog} />
         </div>
       )}
     </div>
