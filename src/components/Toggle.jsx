@@ -1,15 +1,14 @@
 import { cloneElement, forwardRef, useImperativeHandle, useState } from "react";
 import Button from "./Button";
+import PropTypes from "prop-types";
 
-export default forwardRef(function Toggle(props, refs) {
+const Toggle = forwardRef(function Toggle(props, refs) {
   const [visibility, setVisibility] = useState(true);
 
   const hideWhenVisible = { display: visibility ? "none" : "" };
   const showWhenVisible = { display: visibility ? "" : "none" };
-  const toggleVisibility = () => {
-    console.log("KOKO")
-    setVisibility(!visibility);
-  };
+
+  const toggleVisibility = () => setVisibility(!visibility);
 
   useImperativeHandle(refs, () => {
     return {
@@ -33,3 +32,9 @@ export default forwardRef(function Toggle(props, refs) {
     </div>
   );
 });
+
+Toggle.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+export default Toggle;

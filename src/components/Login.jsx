@@ -1,5 +1,13 @@
 import { CircularProgress } from "@mui/material";
 import Button from "./Button";
+import PropTypes from "prop-types";
+
+Login.propTypes = {
+  setPassword: PropTypes.func.isRequired,
+  setUsername: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default function Login({
   setPassword,
@@ -28,7 +36,7 @@ export default function Login({
         name="login-button"
         label={!loading ? "Login" : <CircularProgress />}
         onClick={handleLogin}
-       
+        type="button"
       />
     </form>
   );

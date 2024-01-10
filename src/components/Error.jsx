@@ -1,4 +1,8 @@
-import React from "react";
+import PropTypes from "prop-types";
+
+Error.propTypes = {
+  message: PropTypes.object.isRequired,
+};
 
 export default function Error({ message }) {
   return (

@@ -1,14 +1,25 @@
 import Button from "./Button";
+import PropTypes from "prop-types";
 
-export default function Logout({ user, handleLogout, loading }) {
+Logout.propTypes = {
+  user: PropTypes.object.isRequired,
+  setUser: PropTypes.func.isRequired,
+};
+
+export default function Logout({ user, setUser }) {
+  const handleLogout = () => {
+    window.localStorage.clear();
+    setUser(null);
+  };
+
   return (
     <div className="logout flex">
       <p>Welcome {user.name}</p>
       <Button
         name="logout-button"
-        label={!loading ? "Logout" : <CircularProgress />}
+        label="Logout"
         onClick={handleLogout}
-        loading={loading}
+        type="button"
       />
     </div>
   );

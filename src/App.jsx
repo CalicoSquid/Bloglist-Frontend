@@ -1,9 +1,11 @@
-import { useRef, useState } from "react";
-import Header from "./components/Header";
-import { useEffect } from "react";
-import Blogs from "./components/Blogs";
+import { useRef, useState, useEffect } from "react";
+
 import blogService from "../services/blogs";
 import loginService from "../services/login";
+import applyMessage from "../utils/applyMessage";
+
+import Header from "./components/Header";
+import Blogs from "./components/Blogs";
 import Error from "./components/Error";
 import Create from "./components/Create";
 import Toggle from "./components/Toggle";
@@ -53,17 +55,10 @@ function App() {
       setPassword("");
       setLoading(false);
     } catch (error) {
-      setMessage((prev) => ({
-        ...prev,
-        error: error?.response?.data?.error || "Error logging in",
-      }));
-      setLoading(false);
-      setTimeout(() => {
-        setMessage({
-          error: null,
-          success: null,
-        });
-      }, 5000);
+      applyMessage.error(
+        setMessage,
+        error?.response?.data?.error || "Error logging in"
+      );
     }
   };
 
@@ -73,38 +68,30 @@ function App() {
   };
 
   const handleDeleteBlog = async (id) => {
-    console.log(id);
     try {
-      const response = await blogService.remove(id);
-      console.log(response);
+      await blogService.remove(id);
       const blogs = await blogService.getAll();
-      setBlogs(blogs)
-      setMessage((prev) => ({
-        ...prev,
-        success: "Blog successfully deleted",
-      }));
-      setTimeout(() => {
-        setTimeout(() => {
-          setMessage({
-            error: null,
-            success: null,
-          });
-        }, 5000);
-      });
+      setBlogs(blogs);
+      applyMessage.success(setMessage, "Deleted blog");
+    } catch (error) {
+      applyMessage.error(setMessage, "Error deleting blog");
+    }
+  };
+
+  const handleUpdateBlog = async (blog, likes) => {
+    const blogToUpdate = {
+      ...blog,
+      likes,
+      user: blog.user.id,
+    };
+    try {
+      let x = await blogService.update(blogToUpdate);
+      console.log(x.data);
+      const blogs = await blogService.getAll();
+      setBlogs(blogs);
     } catch (error) {
       console.log(error);
-      setMessage((prev) => ({
-        ...prev,
-        error: "Error deleting blog",
-      }));
-      setTimeout(() => {
-        setTimeout(() => {
-          setMessage({
-            error: null,
-            success: null,
-          });
-        }, 5000);
-      });
+      applyMessage.error(setMessage, "Error");
     }
   };
 
@@ -115,7 +102,7 @@ function App() {
         setPassword={setPassword}
         handleLogin={handleLogin}
         user={user}
-        handleLogout={handleLogout}
+        setUser={setUser}
         loading={loading}
       />
       <Error message={message} />
@@ -129,7 +116,12 @@ function App() {
               setBlogs={setBlogs}
             />
           </Toggle>
-          <Blogs blogs={blogs} deleteBlog={handleDeleteBlog} />
+          <Blogs
+            blogs={blogs}
+            user={user}
+            deleteBlog={handleDeleteBlog}
+            updateBlog={handleUpdateBlog}
+          />
         </div>
       )}
     </div>

@@ -1,7 +1,17 @@
 import { CircularProgress } from "@mui/material";
 import Button from "./Button";
 import { useState } from "react";
+import PropTypes from "prop-types";
 import blogService from "../../services/blogs";
+import applyMessage from "../../utils/applyMessage";
+
+Create.propTypes = {
+  newBlog: PropTypes.object.isRequired,
+  setNewBlog: PropTypes.func.isRequired,
+  setMessage: PropTypes.func.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  toggleVisibility: PropTypes.func,
+};
 
 export default function Create({
   newBlog,
@@ -25,10 +35,10 @@ export default function Create({
   const handleCreateBlog = async (e) => {
     e.preventDefault();
     setLoading(true);
-    toggleVisibility();
     try {
       const createdBlog = await blogService.create(newBlog);
       const blogs = await blogService.getAll();
+      toggleVisibility();
       setNewBlog({
         title: "",
         author: "",
@@ -36,29 +46,16 @@ export default function Create({
       });
       setBlogs(blogs);
       setLoading(false);
-      setMessage((prev) => ({
-        ...prev,
-        success: `${createdBlog.title} was added to the database`,
-      }));
-      setTimeout(() => {
-        setMessage({
-          error: null,
-          success: null,
-        });
-      }, 5000);
+      applyMessage.success(
+        setMessage,
+        `${createdBlog.title} was added to the database`
+      );
     } catch (error) {
-      console.log(error);
-      setMessage((prev) => ({
-        ...prev,
-        error: error?.response?.data?.error || "Error creating blog",
-      }));
       setLoading(false);
-      setTimeout(() => {
-        setMessage({
-          error: null,
-          success: null,
-        });
-      }, 5000);
+      applyMessage.error(
+        setMessage,
+        error?.response?.data?.error || "Error creating blog"
+      );
     }
   };
   return (
@@ -99,7 +96,12 @@ export default function Create({
               onChange={(e) => handleChangeBlog(e)}
             />
           </label>
-          <Button name="close" label="✖" onClick={toggleVisibility} type="button" />
+          <Button
+            name="close"
+            label="✖"
+            onClick={toggleVisibility}
+            type="button"
+          />
         </div>
 
         <Button
@@ -112,7 +114,6 @@ export default function Create({
           type="button"
         />
       </div>
-      
     </form>
   );
 }

@@ -1,20 +1,28 @@
-import { useState } from "react";
 import Card from "./Card";
-import Button from "./Button";
+import PropTypes from "prop-types";
 
-export default function Blogs({ blogs, deleteBlog }) {
-  
+Blogs.propTypes = {
+  blogs: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  updateBlog: PropTypes.func.isRequired,
+};
 
-  const listOfBlogs = blogs.map((blog) => {
-    return (
-      <div className="">
-         <Card
-          blog={blog}
-          deleteBlog={deleteBlog}
-        />
-      </div>
-    );
-  });
+export default function Blogs({ blogs, user, deleteBlog, updateBlog }) {
+  const listOfBlogs = blogs
+    .sort((a, b) => b.likes - a.likes)
+    .map((blog) => {
+      return (
+        <div className="" key={blog.id}>
+          <Card
+            blog={blog}
+            user={user}
+            deleteBlog={deleteBlog}
+            updateBlog={updateBlog}
+          />
+        </div>
+      );
+    });
 
   return (
     <div className="blogs flex col">
