@@ -100,7 +100,7 @@ export default function Card({ blog, user, deleteBlog, updateBlog }) {
         open={open}
         setOpen={setOpen}
         name={blog.title}
-        message={`Are you sure you want to delete ${blog.name}?`}
+        message={`Are you sure you want to delete ${blog.title}?`}
         action={true}
       />
     </div>
