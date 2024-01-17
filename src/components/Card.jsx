@@ -44,32 +44,33 @@ export default function Card({ blog, user, deleteBlog, updateBlog }) {
     <div className="card flex">
       <div className=" likes flex col">
         {showDetails && (
-          <Button
-            name="vote up"
-            label="▲"
-            onClick={() => handleUpVote(blog)}
-            type="button"
-          />
-        )}
-        <p>{likesCount}</p>
-        <small>Likes</small>
-        {showDetails && (
-          <Button
-            name="vote down"
-            label="▼"
-            onClick={() => handleDownVote(blog)}
-            type="button"
-          />
+          <>
+            <Button
+              name="vote up"
+              label="▲"
+              onClick={() => handleUpVote(blog)}
+              type="button"
+            />
+
+            <p>{likesCount}</p>
+            <small>Likes</small>
+
+            <Button
+              name="vote down"
+              label="▼"
+              onClick={() => handleDownVote(blog)}
+              type="button"
+            />
+          </>
         )}
       </div>
 
       <div className=" blog flex col">
-        <h3>{blog.title}</h3>
-
+        <h3 className="blog-title">{blog.title}</h3>
+        <p>{blog.author}</p>
         {showDetails && (
           <div className="details flex">
             <div className="text">
-              <p> Author: {blog.author}</p>
               <a href={blog.url}>{blog.url}</a>
             </div>
 
@@ -99,6 +100,8 @@ export default function Card({ blog, user, deleteBlog, updateBlog }) {
         open={open}
         setOpen={setOpen}
         name={blog.title}
+        message={`Are you sure you want to delete ${blog.name}?`}
+        action={true}
       />
     </div>
   );

@@ -5,28 +5,30 @@ import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 
 Modal.propTypes = {
-  deleteBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func,
   setOpen: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  name: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  action: PropTypes.bool.isRequired,
 };
 
-export default function Modal({ deleteBlog, setOpen, open, name }) {
+export default function Modal({ deleteBlog, setOpen, open, message, action }) {
   return (
     <Dialog
+      id="modal"
       open={open}
       onClose={() => setOpen(false)}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        {`Are you sure you want to delete ${name}?`}
-      </DialogTitle>
-      <DialogActions>
+      <DialogTitle id="alert-dialog-title">{message}</DialogTitle>
+      <DialogActions id="alert-dialog-actions">
         <Button onClick={() => setOpen(false)}>Close</Button>
-        <Button onClick={deleteBlog} color="warning" autoFocus>
-          Delete
-        </Button>
+        {action && (
+          <Button onClick={deleteBlog} color="warning" autoFocus id="action">
+            Delete
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

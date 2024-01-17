@@ -6,6 +6,7 @@
   .error {
     padding: $base-padding;
     text-align: center;
+    
     p {
       color: $error-color;
     }
@@ -14,6 +15,7 @@
   .success {
     padding: $base-padding;
     text-align: center;
+    color: $success-color;
   
     p {
       color: $success-color;

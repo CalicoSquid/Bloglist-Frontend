@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .eslintignore
+jest.setup.txt
 
 # Editor directories and files
 .vscode/*

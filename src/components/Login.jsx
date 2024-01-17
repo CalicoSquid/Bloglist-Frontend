@@ -16,16 +16,18 @@ export default function Login({
   loading,
 }) {
   return (
-    <form action="submit" className="login-form flex">
+    <form action="submit" className="login-form flex" id="login-form">
       <div className="login-fields flex col">
         <input
           type="text"
+          id="username"
           className="login-input input"
           placeholder="Username"
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
+          id="password"
           className="login-input input"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
@@ -34,6 +36,7 @@ export default function Login({
       <Button
         loading={loading}
         name="login-button"
+        id="login-button"
         label={!loading ? "Login" : <CircularProgress />}
         onClick={handleLogin}
         type="button"

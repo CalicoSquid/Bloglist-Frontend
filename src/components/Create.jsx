@@ -35,9 +35,11 @@ export default function Create({
   const handleCreateBlog = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const createdBlog = await blogService.create(newBlog);
       const blogs = await blogService.getAll();
+
       toggleVisibility();
       setNewBlog({
         title: "",
@@ -71,6 +73,7 @@ export default function Create({
               type="text"
               id="blog-title"
               className="blog-title create-input input"
+              placeholder="Blog title"
               onChange={(e) => handleChangeBlog(e)}
             />
           </label>
@@ -82,6 +85,7 @@ export default function Create({
               type="text"
               id="blog-author"
               className="blog-title create-input input"
+              placeholder="Blog Author"
               onChange={(e) => handleChangeBlog(e)}
             />
           </label>
@@ -93,6 +97,7 @@ export default function Create({
               type="text"
               id="blog-url"
               className="blog-title create-input input"
+              placeholder="Blog Website"
               onChange={(e) => handleChangeBlog(e)}
             />
           </label>

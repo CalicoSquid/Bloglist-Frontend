@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 import blogService from "../services/blogs";
 import loginService from "../services/login";
@@ -6,15 +7,17 @@ import applyMessage from "../utils/applyMessage";
 
 import Header from "./components/Header";
 import Blogs from "./components/Blogs";
-import Error from "./components/Error";
+import Message from "./components/Message";
 import Create from "./components/Create";
 import Toggle from "./components/Toggle";
+import Modal from "./components/Modal";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState({
     error: null,
     success: null,
@@ -38,8 +41,17 @@ function App() {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const decodedToken = jwtDecode(user.token);
+      const currentTime = Date.now() / 1000;
+
+      if (decodedToken.exp < currentTime) {
+        handleLogout();
+        setOpen(true);
+      } else {
+        setUser(user);
+        blogService.setToken(user.token);
+        setLogoutTimeout(decodedToken.exp * 1000 - currentTime * 1000);
+      }
     }
   }, []);
 
@@ -55,6 +67,7 @@ function App() {
       setPassword("");
       setLoading(false);
     } catch (error) {
+      setLoading(false);
       applyMessage.error(
         setMessage,
         error?.response?.data?.error || "Error logging in"
@@ -65,6 +78,19 @@ function App() {
   const handleLogout = () => {
     window.localStorage.clear();
     setUser(null);
+  };
+
+  const setLogoutTimeout = (timeout) => {
+    const minutes = Math.floor(timeout / 60000); // 1 minute = 60,000 milliseconds
+    const seconds = ((timeout % 60000) / 1000).toFixed(0); // Take the remainder and convert to seconds
+    setTimeout(() => {
+      handleLogout();
+      setOpen(true);
+    }, timeout);
+
+    console.log(
+      `Session will expire in ${minutes} minutes and ${seconds} seconds.`
+    );
   };
 
   const handleDeleteBlog = async (id) => {
@@ -85,8 +111,7 @@ function App() {
       user: blog.user.id,
     };
     try {
-      let x = await blogService.update(blogToUpdate);
-      console.log(x.data);
+      await blogService.update(blogToUpdate);
       const blogs = await blogService.getAll();
       setBlogs(blogs);
     } catch (error) {
@@ -105,7 +130,7 @@ function App() {
         setUser={setUser}
         loading={loading}
       />
-      <Error message={message} />
+      <Message message={message} />
       {user && (
         <div>
           <Toggle ref={addBlogRef}>
@@ -124,6 +149,12 @@ function App() {
           />
         </div>
       )}
+      <Modal
+        open={open}
+        setOpen={setOpen}
+        message={"Your session has expired, please log in to continue"}
+        action={false}
+      />
     </div>
   );
 }

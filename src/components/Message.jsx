@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 
-Error.propTypes = {
+Message.propTypes = {
   message: PropTypes.object.isRequired,
 };
 
-export default function Error({ message }) {
+export default function Message({ message }) {
   return (
     <div className="message-container">
       {message.error ? (
